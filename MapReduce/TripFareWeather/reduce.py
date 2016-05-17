@@ -2,19 +2,36 @@
 import sys
 
 trip_fares = []
-weather = ""
+this_date = None
+weather = None
 
 for line in sys.stdin:
-    
-    date_tag, values = line.strip().split('\t', 1)
-    date, tag = date_tag.strip().split('|', 1)
+    try:
+        
+        date_tag, values = line.strip().split('\t',1)
+        date, tag = date_tag.strip().split('|',1)
 
-    if tag == 'tripsfare': 
-        trip_fares.append(values)
-    elif tag == 'weather': 
-        weather = values
-    
+        if date != this_date and len(trip_fares) > 0 and weather != None:
+            for tripfare in trip_fares:
+                print ("%s|%s" % (date,tripfare + ',' + weather))
+            trip_fares = []
+            weather = None
+
+        if tag == 'tripfare': 
+            trip_fares.append(values)
+        elif tag == 'weather': 
+            weather = values
+
+        this_date = date
+
+    except:
+        pass
+
 for tripfare in trip_fares:
+    try:
 
-    print ("%s\t%s" % (date,tripfare + ',' + weather))
-    
+        print ("%s|%s" % (date,tripfare + ',' + weather))
+
+    except:
+
+        pass

@@ -19,12 +19,13 @@ for line in sys.stdin:
     if len(line) == 21:
 
         
-        dateindex = line[3].split()[0]
+        dateindex = str(line[3].split()[0])
+        dateindex = re.sub('-','',str(line[0])) if len(line[0]) > 0 else '1900-01-01'
 
         print ('%s|tripfare\t%s' % (dateindex,','.join(line)))
 
     elif len(line) == 30: # weather
-    
+
         date = re.sub('/','-',str(line[0])) if len(line[0]) > 0 else '1900-01-01' #date format yyyy-mm-dd
         tavg = line[2] if len(line[2]) > 0 else '' #average temperature in F
         snow = line[25] if len(line[23]) > 0 else ''#snowed
